@@ -1,0 +1,38 @@
+{
+  "memory": 256,
+  "ttl": 10,
+  "timeout": 300,
+  "minReplicas": 2,
+  "maxReplicas": 4,
+  "workers": 1,
+  "routes": {
+    "install": {
+      "path": "/install",
+      "public": true
+    },
+    "productNotify": {
+      "path": "/vtex/product-notify",
+      "public": true
+    },
+    "orderNotify": {
+      "path": "/emag/order-notify",
+      "public": true
+    },
+    "orderStatusChange": {
+      "path": "/emag/order-status-change",
+      "public": true
+    },
+    "syncEmagProducts": {
+      "path": "/emag/sync-products",
+      "public": true
+    },
+    "mapping": {
+      "path": "/mapping",
+      "public": true
+    },
+    "readDBLogs": {
+      "path": "/logs",
+      "public": true
+    }
+  }
+}

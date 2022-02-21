@@ -1,0 +1,14 @@
+type SalesChannel {
+  Id: ID!
+  Name: String
+  CountryCode: String
+  CultureInfo: String
+}
+
+type Configuration {
+  accountName: String
+  active: Boolean
+  affiliateId: String
+  salesChannel: String
+  email: String
+}

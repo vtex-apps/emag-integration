@@ -1,0 +1,166 @@
+{
+  "name": "emag-connector",
+  "vendor": "zitec",
+  "version": "0.0.1",
+  "title": "eMAG Connector",
+  "description": "",
+  "mustUpdateAt": "",
+  "scripts": {
+    "postreleasy": "vtex publish"
+  },
+  "dependencies": {
+    "vtex.styleguide": "9.x"
+  },
+  "builders": {
+    "react": "3.x",
+    "admin": "0.x",
+    "messages": "1.x",
+    "docs": "0.x",
+    "node": "6.x",
+    "graphql": "1.x"
+  },
+  "policies": [
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "{{account}}.vtexcommercestable.com.br",
+        "path": "*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "portal.vtexcommercestable.com.br",
+        "path": "*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "marketplace-api.emag.ro",
+        "path": "*"
+      }
+    },
+    {
+      "name": "read-workspace-apps"
+    },
+    {
+      "name": "vbase-read-write"
+    }
+  ],
+  "settingsSchema": {
+    "title": "eMAG",
+    "type": "object",
+    "properties": {
+      "username": {
+        "title": "Username",
+        "type": "string",
+        "description": "eMAG Marketplace Username"
+      },
+      "password": {
+        "title": "Password",
+        "type": "string",
+        "description": "eMAG Marketplace Password"
+      },
+      "tradePolicyId": {
+        "title": "Trade Policy ID",
+        "type": "string",
+        "description": "VTEX Trade Policy ID"
+      },
+      "domain": {
+        "title": "Store Domain",
+        "type": "string",
+        "description": "VTEX Store domain - e.g., https://www.shop.myvtex.com"
+      },
+      "affiliateId": {
+        "title": "Affiliate Id",
+        "type": "string",
+        "description": "VTEX Affiliate Id"
+      },
+      "vtexAppToken": {
+        "title": "App Token",
+        "type": "string",
+        "description": "VTEX App Token"
+      },
+      "vtexAppKey": {
+        "title": "App Key",
+        "type": "string",
+        "description": "VTEX App Key"
+      },
+      "maxFactor": {
+        "title": "Max Sale Price (%)",
+        "type": "number",
+        "description": "Percentage to calculate the seller's max offer sale price (only numbers, without decimals). - 100 => 100%"
+      },
+      "minFactor": {
+        "title": "Min Sale Price (%)",
+        "type": "number",
+        "description": "Percentage to calculate the seller's min offer sale price (only numbers, without decimals). - 100 => 100%"
+      },
+      "concatBrandInName": {
+        "title": "Concatenate brand to name",
+        "type": "boolean",
+        "description": "When this flag is enabled, the brand will concatenate with product name (into eMAG product name must contain brand name)"
+      },
+      "valueConcatProductName": {
+        "title": "Value to concatenate with product name",
+        "type": "string",
+        "description": "This value will be concatenated with product name into eMAG"
+      },
+      "handlingTime": {
+        "title": "Handling time",
+        "type": "number",
+        "description": "Handling time, in number of days counted from the day the order was received. If handling_time = 0 the order will be shipped the same day it is received."
+      },
+      "valueConcatProductId": {
+        "title": "Value to concatenate with SKU ID",
+        "type": "number",
+        "description": "This value will be concatenated with SKU ID into eMAG"
+      },
+      "warehouses": {
+        "title": "Warehouses",
+        "type": "string",
+        "description": "VTEX Warehouses - e.g. '1,3,9'"
+      },
+      "senderName": {
+        "title": "Sender name",
+        "type": "string"
+      },
+      "senderPhone": {
+        "title": "Sender phone",
+        "type": "string"
+      },
+      "senderStreet": {
+        "title": "Sender street",
+        "type": "string"
+      },
+      "senderLocalityId": {
+        "title": "Sender locality ID",
+        "type": "number",
+        "description": "eMAG locality ID"
+      },
+      "oversizedShipping": {
+        "title": "Oversized shipping",
+        "type": "boolean",
+        "description": "If enabled, marks the delivery as containing oversized products"
+      },
+      "saturdayDelivery": {
+        "title": "Saturday delivery",
+        "type": "boolean",
+        "description": "If enabled, sender requests the package to be delivered on Saturday"
+      },
+      "samedayDelivery": {
+        "title": "Sameday delivery",
+        "type": "boolean",
+        "description": "If enabled, sender requests the package to be delivered the same day"
+      }
+    }
+  },
+  "settingsUiSchema": {
+    "password": {
+      "ui:widget": "password"
+    }
+  },
+  "credentialType": "absolute",
+  "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
+}
