@@ -1,0 +1,21 @@
+{
+  "section": "customer",
+  "titleId": "admin/navigation.label",
+  "path": "/admin/emag-connector",
+  "subSectionItems": [
+    {
+      "labelId": "admin/navigation.mapper",
+      "path": "/admin/mkp-category-mapper/3be1deef-ac9d-4efa-afc3-b4082e0b8899"
+    },
+    {
+      "labelId": "admin/navigation.logs",
+      "path": "/admin/emag-connector/logs",
+      "searchKeyWordsHelpers": "admin.keywords.logs"
+    },
+    {
+      "labelId": "admin/navigation.productStatus",
+      "path": "/admin/emag-connector/product-status",
+      "searchKeyWordsHelpers": "admin.keywords.productStatus"
+    }
+  ]
+}

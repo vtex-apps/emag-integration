@@ -1,0 +1,14 @@
+{
+  "admin.app.panel": {
+    "component": "AdminPanel",
+    "path": "/admin/app/emag-connector/admin-panel"
+  },
+  "admin.app.logs": {
+    "component": "LogsPanel",
+    "path": "/admin/app/emag-connector/logs"
+  },
+  "admin.app.productStatus": {
+    "component": "ProductStatusPanel",
+    "path": "/admin/app/emag-connector/product-status"
+  }
+}

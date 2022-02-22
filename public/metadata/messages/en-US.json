@@ -1,0 +1,17 @@
+{
+"name": "eMAG Connector",
+"headline": "eMAG Marketplace Integration for VTEX Stores",
+"overview": "eMAG is the largest Romanian marketplace and one of the largest retailers in Eastern Europe. This app allows VTEX store owners to list their products on the eMAG marketplace but also to synchronize catalogs, orders, and warehouses, as well as establish maximum and minimum sales prices for promotions and set handling times for orders.",
+"features": [
+"Directly integrates with the eMAG marketplace",
+"Allows you to synchronize catalogs, orders, and warehouses with eMAG",
+"Allows you to send and receive AWB codes from eMAG",
+"Allows you to set handling times for orders",
+"Allows you to establish minimum and maximum sales prices"
+],
+"additionalInformation": "This app is destined for VTEX store owners that already have an eMAG Marketplace seller account and want to integrate their store with it.",
+"websiteURL": "https://www.emag.ro/",
+"support": {
+"url": "https://support.vtex.com/hc/requests"
+}
+}
