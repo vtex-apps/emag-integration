@@ -255,14 +255,17 @@ export const VTEX = {
   insertDocument: (
     ctx: IOContext,
     entity: string,
-    data: object
+    data: object,
+    skipSchema?: boolean
   ): Promise<{ DocumentId: string }> => {
     return new Promise(async (resolve, reject) => {
       const headers = await VTEX.getHeaders(ctx);
+      let url = `http://${ctx.account}.vtexcommercestable.com.br/api/dataentities/${entity}/documents`;
+      if (!skipSchema) url += `?_schema=${entity}`;
       axios({
         headers,
         method: "POST",
-        url: `http://${ctx.account}.vtexcommercestable.com.br/api/dataentities/${entity}/documents?_schema=${entity}`,
+        url,
         data,
       })
         .then((response) => {
@@ -334,8 +337,13 @@ export const VTEX = {
       where?: string;
       sort?: string;
       pagination?: string;
-    }
-  ): Promise<Mapping[] | VtexEmagProduct[]> => {
+    },
+    getTotalCount: boolean = false
+  ): Promise<
+    | Mapping[]
+    | VtexEmagProduct[]
+    | { results: VtexEmagProduct[]; totalRecordCount: number }
+  > => {
     return new Promise(async (resolve, reject) => {
       let url = `http://${ctx.account}.vtexcommercestable.com.br/api/dataentities/${entity}/search?_schema=${entity}`;
       if (query?.fields) {
@@ -359,7 +367,16 @@ export const VTEX = {
         url,
       })
         .then((response) => {
-          resolve(response?.data);
+          if (getTotalCount) {
+            const restContentRange = response?.headers["rest-content-range"];
+            const total = Number(restContentRange.split("/")[1]);
+            resolve({
+              results: response.data,
+              totalRecordCount: total || 0,
+            });
+          } else {
+            resolve(response?.data);
+          }
         })
         .catch((error) => {
           reject(error?.response?.data);
@@ -383,6 +400,37 @@ export const VTEX = {
             headers,
           },
         },
+      })
+        .then((response) => {
+          resolve(response?.data);
+        })
+        .catch((error) => {
+          reject({
+            data: error?.response?.data,
+            status: error?.response?.status,
+            statusText: error?.response?.statusText,
+          });
+        });
+    });
+  },
+  saveAttachment: (
+    ctx: IOContext,
+    entity: string,
+    id: string,
+    field: string,
+    data: any
+  ): Promise<{ url: string }> => {
+    return new Promise(async (resolve, reject) => {
+      const headers = await VTEX.getHeaders(ctx);
+      const formHeaders = data.getHeaders();
+      axios({
+        headers: {
+          ...headers,
+          ...formHeaders,
+        },
+        method: "POST",
+        url: `http://${ctx.account}.vtexcommercestable.com.br/api/dataentities/${entity}/documents/${id}/${field}/attachments`,
+        data,
       })
         .then((response) => {
           resolve(response?.data);

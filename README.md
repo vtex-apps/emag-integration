@@ -38,24 +38,34 @@ This app is destined for VTEX store owners that already have an eMAG Marketplace
 20. Saturday delivery - If checked, delivery will be possible on saturdays.
 21. Sameday delivery - If checked, delivery will be possible in the same day an order was placed.
 
-### Step 2: Install
+### Step 2: Create MasterData Entity for AWB files
+
+Go to the MasterData interface using the link {accountName}.ds.vtexcrm.com.br - replace {accountName} with your tenant name, and log in.
+Go to the Data Entities tab and add a new entity with the acronym AW and a name of your choice.
+
+You must configure two fields:
+
+1.  orderId (display name Order ID) - type Varchar 50
+2.  pdf (display name AWB pdf) - type File. You will need to edit this field in order to make it public. To do this, click on settings (the gear icon) and check the option "Make readable without credential".
+
+### Step 3: Install
 
 After filling in the settings, go to the **Logs** section and click the _Install_ button.
 
-### Step 3: Configure an affiliate and sales channel
+### Step 4: Configure an affiliate and sales channel
 
 Keep in mind that only the sales channel configured for the affiliate will be taken into consideration when sending products to eMAG Marketplace.
 
-### Step 4: Shipping policy and loading dock
+### Step 5: Shipping policy and loading dock
 
 You will need to configure a shipping policy for eMAG by filling in the field "Shipping Method" with the value "eMAG"
 You will also need to configure a loading dock that points to the sales channel for the eMAG affiliate.
 
-### Step 5: Category Mapping
+### Step 6: Category Mapping
 
 Before sending products to eMAG you will need to map the VTEX categories to eMAG categories. This can be done by accessing the **Category Mapping** menu. For every VTEX category you will need to select the equivalent in eMAG, filling in the specifications and attribute values, where possible.
 
-### Step 6: Products. Product Status List
+### Step 7: Products. Product Status List
 
 For a product to be sent to the eMAG Marketplace, it must be in the sales channel configured for the affiliate. Every time you update a product, a SKU, the stock or the price of an item, the connector will also send the new data to eMAG.
 In order to be accepted in eMAG, you will need to fill in the _Reference Code_ with the _Part Number_ (manufacturer unique code) of the item.
@@ -70,11 +80,11 @@ The products that have been sent to the marketplace can be found in the **Produc
 - eMAG Validation Error - the product was sent successfully but was not validated by eMAG
 - Success - the product was sent successfully and validated by eMAG
 
-### Step 7: Orders
+### Step 8: Orders
 
 The orders originating from eMAG can be seen in the VTEX Order Section. The Origin field will have the value _Fulfillment_ and the order ID will contain the affiliate ID.
 
-### Step 8: Logs
+### Step 9: Logs
 
 In order to track the connector processes in real time you can access the logs, where you can search and filter entries.
 
