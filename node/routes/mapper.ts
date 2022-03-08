@@ -2,6 +2,7 @@ import { json } from "co-body";
 import httpStatus from "http-status-codes";
 import Logger from "../helpers/Logger";
 import { VTEX } from "../helpers/VTEXFetch";
+import { Mapping } from "../typings/schema";
 
 const LOG_TYPE = "mapper";
 
@@ -15,10 +16,10 @@ export async function saveMapping(ctx: Context) {
     if (!category.specifications) {
       category.specifications = [];
     }
-    const oldDocument = await VTEX.getAllDocuments(vtex, "mapping", {
+    const oldDocument = (await VTEX.getAllDocuments(vtex, "mapping", {
       where: `categoryId=${category.categoryId}`,
       fields: "id,categoryId",
-    });
+    })) as Mapping[];
     if (oldDocument?.length) {
       category.id = oldDocument[0].id;
     }

@@ -233,4 +233,22 @@ export const EMAG = {
         });
     });
   },
+  readAWBpdf: async (ctx: IOContext, emag_id: number): Promise<EmagAWB> => {
+    return new Promise(async (resolve, reject) => {
+      const config = await EMAG.getConfig(ctx);
+      axios({
+        headers: config.headers,
+        method: "POST",
+        url: `http://marketplace-api.emag.ro/api-3/awb/read_pdf?auth=${config.hash}&wb_format=a4&emag_id=${emag_id}`,
+        auth: config.auth,
+        responseType: "arraybuffer",
+      })
+        .then((response) => {
+          resolve(response?.data);
+        })
+        .catch((error) => {
+          reject(error?.response?.data);
+        });
+    });
+  },
 };

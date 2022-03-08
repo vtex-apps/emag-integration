@@ -27,31 +27,16 @@ export async function getProductNotifications(ctx: Context) {
   } else if (query.filter) {
     where = `syncStatus=${query.filter}`;
   }
-  return Promise.all([
-    VTEX.getAllDocuments(ctx.vtex, "products", {
+  response.body = await VTEX.getAllDocuments(
+    ctx.vtex,
+    "products",
+    {
       fields: fields.join(","),
       pagination: query.pagination || "0-500",
       sort: query.sort,
       where: where || undefined,
-    }),
-    VTEX.getAllDocuments(ctx.vtex, "products", {
-      fields: "id",
-      pagination: "0-3000",
-      where: where || undefined,
-    }),
-  ])
-    .then((responses) => {
-      const data = {
-        results: responses[0],
-        totalRecordCount: responses[1]?.length || 0,
-      };
-      response.body = data;
-      response.status = httpStatus.OK;
-      return data;
-    })
-    .catch((error) => {
-      response.body = error;
-      response.status = httpStatus.BAD_REQUEST;
-      return error;
-    });
+    },
+    true
+  );
+  response.status = httpStatus.OK;
 }

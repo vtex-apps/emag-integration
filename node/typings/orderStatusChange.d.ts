@@ -49,7 +49,7 @@ export interface EmagAWB {
 
 export interface VTEXTrackingBody {
   trackingNumber: string;
-  trackingUrl: null;
+  trackingUrl: string;
   dispatchedDate: null;
   courier: string;
 }

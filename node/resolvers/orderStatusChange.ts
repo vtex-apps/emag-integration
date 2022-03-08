@@ -4,6 +4,8 @@ import Logger from "../helpers/Logger";
 import { EMAG } from "../helpers/EMAGFetch";
 import { VTEX } from "../helpers/VTEXFetch";
 
+var FormData = require("form-data");
+
 const LOG_TYPE = "orderStatusChange";
 
 export async function orderStatusChangeResolver(
@@ -131,13 +133,41 @@ async function createAndSendAWB(
       data: { emagAWB, eMAGSaveResponse },
     };
   }
+  const emagAWBpdf = await EMAG.readAWBpdf(vtex, emagAWB.emag_id);
+  if (!emagAWBpdf) {
+    throw {
+      code: "Read AWB pdf error",
+      data: { emagAWB, emagAWBpdf, eMAGSaveResponse },
+    };
+  }
+
+  const { DocumentId: localAWBid } = await VTEX.insertDocument(
+    vtex,
+    "AW",
+    {
+      orderId: String(eMAGOrder.id),
+      pdf: "",
+    },
+    true
+  );
+  const filename = `AWB-${eMAGOrder.id}.pdf`;
+  const awbBuffer = Buffer.from(emagAWBpdf);
+  const form = new FormData();
+  form.append("pdf", awbBuffer, {
+    contentType: "application/pdf",
+    filename,
+    knownLength: awbBuffer.byteLength,
+  });
+
+  await VTEX.saveAttachment(vtex, "AW", localAWBid, "pdf", form);
+  const trackingUrl = getAttachmentUrl(vtex, "AW", localAWBid, "pdf", filename);
 
   const invoicePackage = VTEXOrder.packageAttachment.packages.find(
     (item) => item.invoiceUrl
   );
   const vtexTracking = {
     trackingNumber: emagAWB.awb[0]?.awb_number,
-    trackingUrl: null,
+    trackingUrl,
     dispatchedDate: null,
     courier: emagAWB.courier.courier_name,
   };
@@ -154,4 +184,14 @@ async function createAndSendAWB(
     { reservationId, emagAWB, vtexAWB, sentAWB: AWB },
     String(eMAGOrder.id)
   );
+}
+
+function getAttachmentUrl(
+  ctx: IOContext,
+  entity: string,
+  id: string,
+  field: string,
+  filename: string
+) {
+  return `https://${ctx.account}.vtexcommercestable.com.br/api/dataentities/${entity}/documents/${id}/${field}/attachments/${filename}`;
 }
