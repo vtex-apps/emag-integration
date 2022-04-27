@@ -15,11 +15,11 @@ export async function productNotify(ctx: Context) {
   const body: { IdSku: string; ProductId: number; IdAffiliate: string; } = await json(req);
   const appSettings = await getAppSettings(vtex);
   if (appSettings.affiliateId !== body.IdAffiliate) {
-    console.log(`Product ${body.ProductId} and SKU ${body.IdSku} has another affiliateId: ${body.IdAffiliate}. Required affiliateId: ${appSettings.affiliateId}`)
+    vtex.logger.warn(`Product ${body.ProductId} and SKU ${body.IdSku} has another affiliateId: ${body.IdAffiliate}. Required affiliateId: ${appSettings.affiliateId}`)
     response.status = httpStatus.OK;
     return { success: true };
   }
-  console.log("PRODUCT NOTIFY", body, vtex);
+
   await Logger.createDBLog(
     vtex,
     LOG_TYPE,
@@ -152,7 +152,7 @@ async function updateDBProduct(
     )) as { DocumentId: string };
     return updateResponse.DocumentId;
   } catch (error) {
-    if (error.status === 304 && error.statusText === "Not Modified") {
+    if (error?.status === 304 && error?.statusText === "Not Modified") {
       return product.id || "";
     }
     throw error;
