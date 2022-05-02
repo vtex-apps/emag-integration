@@ -43,6 +43,7 @@ export const EMAG = {
         auth: config.auth,
       })
         .then((response) => {
+          if (response?.data?.isError) return reject(response?.data);
           resolve(response?.data);
         })
         .catch((error) => {
@@ -64,6 +65,7 @@ export const EMAG = {
         data,
       })
         .then((response) => {
+          if (response?.data?.isError) return reject(response?.data);
           resolve(response?.data);
         })
         .catch((error) => {
@@ -82,6 +84,7 @@ export const EMAG = {
         data: { id },
       })
         .then((response) => {
+          if (response?.data?.isError) return reject(response?.data);
           resolve(response?.data?.results[0]);
         })
         .catch((error) => {
@@ -100,6 +103,7 @@ export const EMAG = {
         data: { id },
       })
         .then((response) => {
+          if (response?.data?.isError) return reject(response?.data);
           resolve(response?.data?.results[0]);
         })
         .catch((error) => {
@@ -120,6 +124,7 @@ export const EMAG = {
         auth: config.auth,
       })
         .then((response) => {
+          if (response?.data?.isError) return reject(response?.data);
           resolve(response?.data);
         })
         .catch((error) => {
@@ -141,6 +146,7 @@ export const EMAG = {
         data,
       })
         .then((response) => {
+          if (response?.data?.isError) return reject(response?.data);
           resolve(response?.data);
         })
         .catch((error) => {
@@ -162,6 +168,7 @@ export const EMAG = {
         data,
       })
         .then((response) => {
+          if (response?.data?.isError) return reject(response?.data);
           resolve(response?.data);
         })
         .catch((error) => {
@@ -183,6 +190,7 @@ export const EMAG = {
         data: { id: categoryId },
       })
         .then((response) => {
+          if (response?.data?.isError) return reject(response?.data);
           resolve(response?.data?.results[0]);
         })
         .catch((error) => {
@@ -208,6 +216,7 @@ export const EMAG = {
         data,
       })
         .then((response) => {
+          if (response?.data?.isError) return reject(response?.data);
           resolve(response?.data);
         })
         .catch((error) => {
@@ -226,6 +235,7 @@ export const EMAG = {
         data: { reservation_id },
       })
         .then((response) => {
+          if (response?.data?.isError) return reject(response?.data);
           resolve(response?.data?.results);
         })
         .catch((error) => {
@@ -244,6 +254,7 @@ export const EMAG = {
         responseType: "arraybuffer",
       })
         .then((response) => {
+          if (response?.data?.isError) return reject(response?.data);
           resolve(response?.data);
         })
         .catch((error) => {

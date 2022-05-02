@@ -2,7 +2,7 @@ import { IOContext } from "@vtex/api";
 import { json } from "co-body";
 import httpStatus from "http-status-codes";
 import { EMAG } from "../helpers/EMAGFetch";
-
+import { getAppSettings } from "../helpers/ConnectorHelper";
 import Logger from "../helpers/Logger";
 import { VTEX } from "../helpers/VTEXFetch";
 import { createEmagProduct } from "../resolvers/createEmagProduct";
@@ -12,7 +12,14 @@ const LOG_TYPE = "productNotify";
 
 export async function productNotify(ctx: Context) {
   const { response, req, vtex } = ctx;
-  const body: { IdSku: string; ProductId: number } = await json(req);
+  const body: { IdSku: string; ProductId: number; IdAffiliate: string; } = await json(req);
+  const appSettings = await getAppSettings(vtex);
+  if (appSettings.affiliateId !== body.IdAffiliate) {
+    vtex.logger.warn(`Product ${body.ProductId} and SKU ${body.IdSku} has another affiliateId: ${body.IdAffiliate}. Required affiliateId: ${appSettings.affiliateId}`)
+    response.status = httpStatus.OK;
+    return { success: true };
+  }
+
   await Logger.createDBLog(
     vtex,
     LOG_TYPE,
@@ -82,6 +89,7 @@ export async function productNotify(ctx: Context) {
 
     await finishProcess(vtex, dbProduct, eMAGProduct, error);
   }
+  response.status = httpStatus.OK;
   return { success: true };
 }
 
@@ -144,7 +152,7 @@ async function updateDBProduct(
     )) as { DocumentId: string };
     return updateResponse.DocumentId;
   } catch (error) {
-    if (error.status === 304 && error.statusText === "Not Modified") {
+    if (error?.status === 304 && error?.statusText === "Not Modified") {
       return product.id || "";
     }
     throw error;
