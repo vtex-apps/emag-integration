@@ -5,7 +5,7 @@ import InputComponent from "../../../components/InputComponent";
 import type { DefaultProps } from "../../../typings/props";
 
 const CONNECTOR_ENDPOINT =
-  "http://timetreedev--zitec.myvtex.com/_v/vtex/connector-notification";
+"http://dacris.myvtex.com/_v/vtex/connector-notification";
 
 const SearchEndpoint: React.FC<DefaultProps> = ({ intl, config }) => {
   return (
