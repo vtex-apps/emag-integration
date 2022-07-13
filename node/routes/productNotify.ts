@@ -47,6 +47,7 @@ export async function productNotify(ctx: Context) {
     dbProduct = { ...dbProduct, ...extraData, eMAGProductID: eMAGProduct.id };
   } catch (error) {
     dbProduct.syncStatus = "VTEX_ERROR";
+    if (!error) error = "VTEX API Error for creating Emag Product";
     return await finishProcess(vtex, dbProduct, eMAGProduct, error);
   }
 
@@ -99,6 +100,7 @@ async function finishProcess(
   eMAGProduct: any,
   error?: any
 ) {
+  error && typeof error === "string" && dbProduct.errorMessages.push(error);
   error?.error && dbProduct.errorMessages.push(error.error);
   error?.errorMessage && dbProduct.errorMessages.push(error.errorMessage);
   error?.status && dbProduct.errorMessages.push(error.status);
