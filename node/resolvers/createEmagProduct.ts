@@ -5,12 +5,12 @@ import { EMAG } from "../helpers/EMAGFetch";
 
 import { VTEX } from "../helpers/VTEXFetch";
 import {
-  CartSimultationResponse,
   emagCharacteristic,
   EmagSentProduct,
   SKU,
   Specification,
   VtexEmagProduct,
+  VtexSkuPrice,
   Warehouse,
 } from "../typings/productNotify";
 import { Mapping } from "../typings/schema";
@@ -205,25 +205,17 @@ async function getPrice(
   sale_price: number;
   recommended_price: number;
 }> {
-  const cartSimulation: CartSimultationResponse = await VTEX.cartSimulation(
-    vtex,
-    {
-      items: [{ id: IdSku, quantity: 1, seller: "1" }],
-    }
-  );
-
-  if (!cartSimulation.items?.length) {
+  const vtexSkuPrice: VtexSkuPrice = await VTEX.getPrice(vtex, appSettings, IdSku);
+  if (!vtexSkuPrice) {
     throw {
       IdSku,
       status: httpStatus.NOT_FOUND,
-      errorMessage: "Cart simulation failed",
-      messages: cartSimulation?.messages,
+      errorMessage: "Price not found"
     };
   }
 
-  const price = cartSimulation.items[0].price / 100;
-  const listPrice = cartSimulation.items[0].listPrice / 100;
-
+  const price = vtexSkuPrice.sellingPrice;
+  const listPrice = vtexSkuPrice.listPrice;
   return {
     max_sale_price: parseFloat(
       (price * (appSettings.maxFactor / 100 + 1)).toFixed(2)

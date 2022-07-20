@@ -228,3 +228,11 @@ export interface EmagCategory {
     }[];
   }[];
 }
+
+export interface VtexSkuPrice {
+  tradePolicyId: string;
+  listPrice: number;
+  costPrice: number;
+  sellingPrice: number;
+  priceValidUntil: string;
+}

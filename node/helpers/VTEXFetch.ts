@@ -14,6 +14,7 @@ import {
   CartSimultationResponse,
   SKU,
   VtexEmagProduct,
+  VtexSkuPrice,
   Warehouse,
 } from "../typings/productNotify";
 import { Index, Mapping, Schema } from "../typings/schema";
@@ -78,6 +79,22 @@ export const VTEX = {
         headers,
         method: "GET",
         url: `http://${ctx.account}.vtexcommercestable.com.br/api/logistics/pvt/inventory/skus/${skuId}`,
+      })
+        .then((response) => {
+          resolve(response?.data);
+        })
+        .catch((error) => {
+          reject(error?.response?.data);
+        });
+    });
+  },
+  getPrice: (ctx: IOContext, settings: AppSettings, skuId: string): Promise<VtexSkuPrice> => {
+    return new Promise(async (resolve, reject) => {
+      const headers = await VTEX.getHeaders(ctx);
+      axios({
+        headers,
+        method: "GET",
+        url: `http://api.vtex.com/${ctx.account}/pricing/prices/${skuId}/computed/${settings.tradePolicyId}`
       })
         .then((response) => {
           resolve(response?.data);
